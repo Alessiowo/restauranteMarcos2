@@ -23,8 +23,9 @@ public class Pedido {
     private int cantidadPersonas;
 
     @NotNull(message = "El menú es obligatorio")
-    @ManyToOne(fetch = FetchType.LAZY)    // Relación con otra entidad
+    @ManyToOne(fetch = FetchType.LAZY)    // Relación con menu
     @JoinColumn(name = "menuId", nullable = false)
+
     private Menu menu;
 
     @NotBlank(message = "El estado de la orden es obligatorio")

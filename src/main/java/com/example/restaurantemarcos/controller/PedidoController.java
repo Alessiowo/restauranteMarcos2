@@ -29,7 +29,7 @@ public class PedidoController {
     public ResponseEntity<Pedido> getPedidoById(@PathVariable(value = "id") Long id){
         Pedido pedido = pedidoService.getPedidoById(id);
         if (pedido != null) {
-            return ResponseEntity.ok(pedido);
+            return ResponseEntity.ok().body(pedido);
         }
         return ResponseEntity.notFound().build();
     }
