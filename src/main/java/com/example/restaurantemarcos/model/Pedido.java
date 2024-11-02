@@ -1,5 +1,6 @@
 package com.example.restaurantemarcos.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -23,7 +24,8 @@ public class Pedido {
     private int cantidadPersonas;
 
     @NotNull(message = "El menú es obligatorio")
-    @ManyToOne(fetch = FetchType.LAZY)    // Relación con menu
+    @ManyToOne(fetch = FetchType.LAZY)    // relacion con menu
+    @JsonIgnore
     @JoinColumn(name = "menuId", nullable = false)
 
     private Menu menu;

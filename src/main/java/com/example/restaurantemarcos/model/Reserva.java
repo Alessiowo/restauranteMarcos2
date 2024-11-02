@@ -1,5 +1,6 @@
 package com.example.restaurantemarcos.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -25,6 +26,7 @@ public class Reserva {
     private int cantidadPersonas;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "preordenId")
     private Pedido preorden;
 
