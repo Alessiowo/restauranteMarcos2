@@ -1,5 +1,6 @@
 package com.example.restaurantemarcos.controller;
 
+import com.example.restaurantemarcos.exception.ResourceNotFoundException;
 import com.example.restaurantemarcos.model.Pedido;
 import com.example.restaurantemarcos.repository.PedidoRepository;
 import com.example.restaurantemarcos.service.PedidoService;
@@ -25,7 +26,7 @@ public class PedidoController {
 
     //obtener Pedido por id -http
     @GetMapping ("/{id}")
-    public ResponseEntity<Pedido> getPedidoById(@PathVariable Long id){
+    public ResponseEntity<Pedido> getPedidoById(@PathVariable(value = "id") Long id){
         Pedido pedido = pedidoService.getPedidoById(id);
         if (pedido != null) {
             return ResponseEntity.ok(pedido);
@@ -36,14 +37,18 @@ public class PedidoController {
     //Registrar pedido por -http
 
     @PostMapping
-    public Pedido addPedido(@RequestBody Pedido pedido){
-        return pedidoService.addPedido(pedido);
-    }
+    public ResponseEntity<Pedido> addPedido(@RequestBody Pedido pedido, @RequestParam Long menuId) {
+        try {
+            Pedido nuevoPedido = pedidoService.addPedido(pedido, menuId);
+            return ResponseEntity.ok(nuevoPedido);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(null);}
+        }
 
     //actualizamos el pedidio con su id /http
     @PutMapping("/{id}")
-    public  ResponseEntity<Pedido> updatePedido(@RequestBody Pedido pedido, @PathVariable Long id){
-        Pedido pedidoUpdate = pedidoService.updatePedido(pedido, id);
+    public  ResponseEntity<Pedido> updatePedido(@RequestBody Pedido pedido, @PathVariable(value ="id") Long id, @RequestParam Long menuId){
+        Pedido pedidoUpdate = pedidoService.updatePedido(pedido, id, menuId);
         if (pedidoUpdate != null) {
             return ResponseEntity.ok(pedidoUpdate);
         }
@@ -53,8 +58,8 @@ public class PedidoController {
     //matar pedidos ;-;
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePedido(@PathVariable Long id){
+    public ResponseEntity<Void> deletePedido(@PathVariable(value = "id") Long id){
         pedidoService.deletePedido(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

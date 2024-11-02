@@ -26,7 +26,7 @@ public class MenuController {
 
     //obtener menu por id /http
     @GetMapping("/{id}")
-    public ResponseEntity<Menu> getMenuById(@PathVariable Long id) {
+    public ResponseEntity<Menu> getMenuById(@PathVariable(value = "id") Long id) {
         Menu menu = menuService.getMenuById(id);
         if (menu != null) {
             return ResponseEntity.ok(menu);
@@ -42,7 +42,7 @@ public class MenuController {
 
     //actualizar un menu por ID /http
     @PutMapping("/{id}")
-    public ResponseEntity<Menu> updateMenu(@PathVariable Long id, @RequestBody Menu menu) {
+    public ResponseEntity<Menu> updateMenu(@PathVariable(value = "id") Long id, @RequestBody Menu menu) {
         Menu updatedMenu = menuService.updateMenu(id, menu);
         if (updatedMenu != null) {
             return ResponseEntity.ok(updatedMenu);
@@ -52,7 +52,7 @@ public class MenuController {
 
     //Eliminar menu
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMenu(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteMenu(@PathVariable(value="id") Long id) {
         menuService.deleteMenu(id);
         return ResponseEntity.noContent().build();
     }

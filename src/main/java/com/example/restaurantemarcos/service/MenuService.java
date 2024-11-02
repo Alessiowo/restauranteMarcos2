@@ -9,8 +9,13 @@ import java.util.List;
 
 @Service
 public class MenuService {
+
+    private final  MenuRepository menuRepository;
     @Autowired
-    private MenuRepository menuRepository;
+    public MenuService(MenuRepository menuRepository) {
+        this.menuRepository = menuRepository;
+    }
+
 
     //Metodo para obtener todos los menus
     public List<Menu> getAllMenus() {
@@ -27,13 +32,17 @@ public class MenuService {
         return menuRepository.save(menu);
     }
 
-    //Metodo para editar menus
+    //Metodo para editar menu
 
     public Menu updateMenu(Long id, Menu menu) {
         Menu menu1 = menuRepository.findById(id).orElse(null);
         if (menu1 != null) {
-            menu1.setDescripcionMenu(menu.getDescripcionMenu());
-            menu1.setNombreMenu(menu.getNombreMenu());
+            menu1.setCategoria(menu.getCategoria());
+            menu1.setDescripcion(menu.getDescripcion());
+            menu1.setNombre(menu.getNombre());
+            menu1.setPrecio(menu.getPrecio());
+            menu1.setStock(menu.getStock());
+            return menuRepository.save(menu1);
 
         }
         return null;

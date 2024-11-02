@@ -1,56 +1,89 @@
 package com.example.restaurantemarcos.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+import java.util.Date;
+
 @Entity
+@Table(name = "reserva")
 public class Reserva {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long reservaId;
 
-    private Long idReserva;
-    private String emailReserva;
-    private String nombreReserva;
-    private String fechaReserva;
-    private String horaReserva;
+    @NotBlank(message = "El nombre del cliente es obligatorio")
+    @Column(name = "nombreCliente", nullable = false)
+    private String nombreCliente;
 
+    @Positive(message = "La cantidad de personas debe ser positiva")
+    @Column(name = "cantidadPersonas", nullable = false)
+    private int cantidadPersonas;
 
-    public Long getIdReserva() {
-        return idReserva;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "preordenId")
+    private Pedido preorden;
+
+    @NotNull(message = "La fecha de la reserva es obligatoria")
+    @FutureOrPresent(message = "La fecha de la reserva debe ser en el presente o en el futuro")
+    @Column(name = "fecha", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
+
+    @NotBlank(message = "El estado de la reserva es obligatorio")
+    @Column(name = "estadoReserva", nullable = false)
+    private String estadoReserva;
+
+    public Long getReservaId() {
+        return reservaId;
     }
 
-    public void setIdReserva(Long idReserva) {
-        this.idReserva = idReserva;
+    public void setReservaId(Long reservaId) {
+        this.reservaId = reservaId;
     }
 
-    public String getEmailReserva() {
-        return emailReserva;
+    public @NotBlank(message = "El nombre del cliente es obligatorio") String getNombreCliente() {
+        return nombreCliente;
     }
 
-    public void setEmailReserva(String emailReserva) {
-        this.emailReserva = emailReserva;
+    public void setNombreCliente(@NotBlank(message = "El nombre del cliente es obligatorio") String nombreCliente) {
+        this.nombreCliente = nombreCliente;
     }
 
-    public String getNombreReserva() {
-        return nombreReserva;
+    @Positive(message = "La cantidad de personas debe ser positiva")
+    public int getCantidadPersonas() {
+        return cantidadPersonas;
     }
 
-    public void setNombreReserva(String nombreReserva) {
-        this.nombreReserva = nombreReserva;
+    public void setCantidadPersonas(@Positive(message = "La cantidad de personas debe ser positiva") int cantidadPersonas) {
+        this.cantidadPersonas = cantidadPersonas;
     }
 
-    public String getFechaReserva() {
-        return fechaReserva;
+    public Pedido getPreorden() {
+        return preorden;
     }
 
-    public void setFechaReserva(String fechaReserva) {
-        this.fechaReserva = fechaReserva;
+    public void setPreorden(Pedido preorden) {
+        this.preorden = preorden;
     }
 
-    public String getHoraReserva() {
-        return horaReserva;
+    public @NotNull(message = "La fecha de la reserva es obligatoria") @FutureOrPresent(message = "La fecha de la reserva debe ser en el presente o en el futuro") Date getFecha() {
+        return fecha;
     }
 
-    public void setHoraReserva(String horaReserva) {
-        this.horaReserva = horaReserva;
+    public void setFecha(@NotNull(message = "La fecha de la reserva es obligatoria") @FutureOrPresent(message = "La fecha de la reserva debe ser en el presente o en el futuro") Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public @NotBlank(message = "El estado de la reserva es obligatorio") String getEstadoReserva() {
+        return estadoReserva;
+    }
+
+    public void setEstadoReserva(@NotBlank(message = "El estado de la reserva es obligatorio") String estadoReserva) {
+        this.estadoReserva = estadoReserva;
     }
 }

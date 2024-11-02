@@ -2,7 +2,6 @@ package com.example.restaurantemarcos.controller;
 
 import com.example.restaurantemarcos.model.Reserva;
 import com.example.restaurantemarcos.repository.ReservaRepository;
-import com.example.restaurantemarcos.service.PedidoService;
 import com.example.restaurantemarcos.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +16,6 @@ public class ReservaController {
 
     @Autowired
     private ReservaService reservaService;
-    @Autowired
-    private PedidoService pedidoService;
 
     //tener al pedido por su id -http
     @GetMapping
@@ -37,17 +34,27 @@ public class ReservaController {
         return ResponseEntity.notFound().build();
     }
 
+    @PostMapping
+    public ResponseEntity<Reserva> addReserva(@RequestBody Reserva reserva, @RequestParam Long pedidoId){
+        try {
+            Reserva nuevaReserva = reservaService.addReserva(reserva, pedidoId);
+            return ResponseEntity.ok(nuevaReserva);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
     //Registrar esto... reserva en el http
     @PutMapping("/{id}")
-    public ResponseEntity<Reserva> updateReserva(@PathVariable Long id, @RequestBody Reserva reserva){
-        Reserva reservaUptate = reservaService.updateReserva(reserva, id);
-        if(reserva != null){
-            return ResponseEntity.ok(reservaUptate);
+    public ResponseEntity<Reserva> updateReserva(@PathVariable Long id, @RequestBody Reserva reserva, @RequestParam Long pedidoId){
+        Reserva reservaAct = reservaService.updateReserva(reserva, id,pedidoId);
+        if(reservaAct != null){
+            return ResponseEntity.ok(reservaAct);
         }
         return ResponseEntity.notFound().build();
     }
 
-    //instakill para los registros pipipi
+    //instakill para los registros
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReserva(@PathVariable Long id){
         reservaService.deleteReserva(id);
