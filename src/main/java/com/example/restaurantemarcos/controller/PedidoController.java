@@ -55,7 +55,7 @@ public class PedidoController {
         return ResponseEntity.notFound().build();
     }
 
-    //matar pedidos ;-;
+    //matar pedidos
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePedido(@PathVariable(value = "id") Long id){
