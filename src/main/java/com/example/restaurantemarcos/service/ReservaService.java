@@ -1,5 +1,6 @@
 package com.example.restaurantemarcos.service;
 
+import com.example.restaurantemarcos.exception.ResourceNotFoundException;
 import com.example.restaurantemarcos.model.Reserva;
 import com.example.restaurantemarcos.model.Pedido;
 import com.example.restaurantemarcos.repository.ReservaRepository;
@@ -37,16 +38,10 @@ public class ReservaService {
     }
 
     //Metodo para añadir Reservas
-    public Reserva addReserva(Reserva reserva, Long pedidoId) {
-        Pedido pedido= pedidoRepository.findById(reserva.getPreorden().getPedidoId()).orElse(null);
-            if(pedido != null){
-                reserva.setPreorden(pedido);
-                reserva.setEstadoReserva("Pendiente");
-                reserva.setCantidadPersonas(1);
-                reserva.setNombreCliente("Anonimo");
-                reserva.setFecha(Date.from(LocalDate.now().atStartOfDay().atZone(java.time.ZoneId.systemDefault()).toInstant()));
-            }
-
+    public Reserva addReserva(Reserva reserva, Long pedidoId) throws ResourceNotFoundException {
+        Pedido pedido = pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado con id: " + pedidoId));
+        reserva.setPreorden(pedido);
         return reservaRepository.save(reserva);
     }
 
