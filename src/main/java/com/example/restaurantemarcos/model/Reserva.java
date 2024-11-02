@@ -26,7 +26,7 @@ public class Reserva {
     private int cantidadPersonas;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonIgnore//para que peuda listar
     @JoinColumn(name = "preordenId")
     private Pedido preorden;
 

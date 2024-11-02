@@ -25,7 +25,7 @@ public class Pedido {
 
     @NotNull(message = "El menú es obligatorio")
     @ManyToOne(fetch = FetchType.LAZY)    // relacion con menu
-    @JsonIgnore
+    @JsonIgnore //para que pueda listar
     @JoinColumn(name = "menuId", nullable = false)
 
     private Menu menu;
