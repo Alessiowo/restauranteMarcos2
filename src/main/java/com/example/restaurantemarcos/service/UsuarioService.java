@@ -1,39 +1,61 @@
 package com.example.restaurantemarcos.service;
 
-import com.example.restaurantemarcos.model.Usuario;
-import com.example.restaurantemarcos.repository.UsuarioReposity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import com.example.restaurantemarcos.model.Usuario;
+import com.example.restaurantemarcos.repository.RolRepository;
+import com.example.restaurantemarcos.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
-    private final UsuarioReposity usuarioReposity;
     @Autowired
-    public UsuarioService(UsuarioReposity usuarioReposity) {
-        this.usuarioReposity = usuarioReposity;
+    private  UsuarioRepository usuarioRepository;
+    @Autowired
+    private  RolRepository rolRepository;
+    @Autowired
+    private  PasswordEncoder passwordEncoder;
+
+    // Create
+    public Usuario addUsuario(Usuario usuario) {
+        if (usuarioRepository.findByNombreUsuario(usuario.getNombreUsuario()).isPresent()) {
+            throw new RuntimeException("El nombre de usuario ya existe");
+        }
+
+        usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+
+        return usuarioRepository.save(usuario);
     }
 
+    // Read
     public List<Usuario> getAllUsuarios() {
-        return usuarioReposity.findAll();
+        return usuarioRepository.findAll();
     }
 
     public Usuario getUsuarioById(Long id) {
-        return usuarioReposity.findById(id).orElse(null);
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 
-    public Usuario addUsuario(Usuario usuario) {
-        return usuarioReposity.save(usuario);
-    }
+    // Update
+    public Usuario updateUsuario(Long id, Usuario usuarioDetalles) {
+        Usuario usuario = getUsuarioById(id);
 
-    public Usuario updateUsuario(Usuario usuario, Long id) {
-        Usuario usuario1 = usuarioReposity.findById(id).orElse(null);
-        if (usuario1 != null) {
-            usuario1.setRol(usuario.getRol());
-            return usuarioReposity.save(usuario1);
+        // Actualizar nombre de usuario si es proporcionado y diferente
+        if (usuarioDetalles.getNombreUsuario() != null && !usuarioDetalles.getNombreUsuario().equals(usuario.getNombreUsuario())) {
+            if (usuarioRepository.findByNombreUsuario(usuarioDetalles.getNombreUsuario()).isPresent()) {
+                throw new RuntimeException("El nombre de usuario ya existe");
+            }
+            usuario.setNombreUsuario(usuarioDetalles.getNombreUsuario());
         }
-        return null;
+
+        // Actualizar contraseña si es proporcionada
+        if (usuarioDetalles.getContrasena() != null && !usuarioDetalles.getContrasena().isEmpty()) {
+            usuario.setContrasena(passwordEncoder.encode(usuarioDetalles.getContrasena()));
+        }
+
+        return usuarioRepository.save(usuario);
     }
-    //No debemos tener ni siquiera la opción o el metodo de eliminar usuarios en nuestro sistema
 
 }

@@ -43,7 +43,6 @@ public class MenuService {
             menu1.setPrecio(menu.getPrecio());
             menu1.setStock(menu.getStock());
             return menuRepository.save(menu1);
-
         }
         return null;
     }
