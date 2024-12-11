@@ -1,10 +1,8 @@
 package com.example.restaurantemarcos.controller;
 
 import com.example.restaurantemarcos.model.Reserva;
-import com.example.restaurantemarcos.repository.ReservaRepository;
 import com.example.restaurantemarcos.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

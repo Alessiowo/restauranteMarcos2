@@ -1,28 +1,25 @@
 package com.example.restaurantemarcos.controller;
 
 import com.example.restaurantemarcos.model.Usuario;
+import com.example.restaurantemarcos.repository.RolRepository;
 import com.example.restaurantemarcos.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuario")
-@PreAuthorize("hasRole('ADMIN')")
+
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private RolRepository rolRepository;
 
     // Registrar un nuevo usuario - HTTP POST
     @PostMapping("/api/register")
@@ -62,4 +59,18 @@ public class UsuarioController {
         }
     }
 
+    @PutMapping("/{usuarioId}/roles")
+    public ResponseEntity<?> updateUserRoles(
+            @PathVariable Long userId,
+            @RequestBody Set<String> roleNames) {
+        try {
+            Usuario updatedUsuario = usuarioService.updateUsuarioRol(userId, roleNames);
+            return ResponseEntity.ok(updatedUsuario);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
+
+

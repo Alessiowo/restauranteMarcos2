@@ -1,15 +1,14 @@
 package com.example.restaurantemarcos.service;
 
-import com.example.restaurantemarcos.model.Pedido;
+import com.example.restaurantemarcos.exception.ResourceNotFoundException;
 import com.example.restaurantemarcos.model.Menu;
-import com.example.restaurantemarcos.repository.PedidoRepository;
+import com.example.restaurantemarcos.model.Pedido;
 import com.example.restaurantemarcos.repository.MenuRepository;
+import com.example.restaurantemarcos.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.restaurantemarcos.exception.ResourceNotFoundException;
 
 import java.util.List;
-import java.time.LocalDate;
 
 @Service
 public class PedidoService {

@@ -2,10 +2,8 @@ package com.example.restaurantemarcos.controller;
 
 import com.example.restaurantemarcos.exception.ResourceNotFoundException;
 import com.example.restaurantemarcos.model.Pedido;
-import com.example.restaurantemarcos.repository.PedidoRepository;
 import com.example.restaurantemarcos.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
